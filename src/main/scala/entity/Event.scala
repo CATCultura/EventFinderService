@@ -2,6 +2,8 @@ package cat.cultura.eventfinder
 package entity
 
 
+import com.fasterxml.jackson.annotation.{JsonAutoDetect, JsonProperty}
+
 import java.util
 import java.util.List
 import javax.persistence.{Access, AccessType, CollectionTable, Column, ElementCollection, Entity, GeneratedValue, GenerationType, Id, JoinColumn, Lob, Table}
@@ -9,8 +11,8 @@ import javax.persistence.{Access, AccessType, CollectionTable, Column, ElementCo
 @Entity
 @Table(name="event")
 @Access(value=AccessType.FIELD)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class Event {
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

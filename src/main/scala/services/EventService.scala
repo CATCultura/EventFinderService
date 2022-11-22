@@ -33,20 +33,19 @@ class EventService @Autowired()(eventJpaRepository: EventJpaRepository) {
     result
   }
 
-  def getByDistance(lat: Double, long: Double, radius: Double): Set[Event] = {
+  def getByDistance(lat: Double, long: Double, radius: Double): java.util.List[Event] = {
     val events: Set[Event] = eventJpaRepository.getAll
-    var result : Set[Event] = Set()
+    val result: java.util.List[Event] = util.ArrayList[Event]
 
     val today = java.time.LocalDate.now.atStartOfDay(ZoneId.systemDefault()).toLocalDate
 
     for (i <- events) {
       val start : java.time.chrono.ChronoLocalDate = extractDate(i.dataInici)
-
       val end : java.time.chrono.ChronoLocalDate = extractDate(i.dataFi)
 
       if (today.isAfter(start) && today.isBefore(end)) {
         if (distanceCalculator(i.latitud, i.longitud, lat, long) < radius) {
-          result += i
+          result.add(i)
         }
       }
     }
