@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @EnableTransactionManagement
 @Configuration
 @Autowired
-@EnableJpaRepositories(basePackages = Array("cat.cultura.eventfinder"))
+@EnableJpaRepositories(basePackages = Array("cat.cultura.eventfinder.repository.jpa"))
 class SpringConfiguration {
 
 }
