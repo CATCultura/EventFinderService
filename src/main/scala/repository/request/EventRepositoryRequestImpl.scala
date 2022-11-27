@@ -18,7 +18,7 @@ import java.net.{HttpURLConnection, URL}
 
 class EventRepositoryRequestImpl extends EventRepository {
 
-  private val requestUrl : String = "http://localhost:8081/allevents"
+  private val requestUrl : String = "http://10.4.41.41:8081/allevents"
 
   private val hash : String = "eventservice"
 

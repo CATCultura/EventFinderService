@@ -3,6 +3,9 @@ package utils
 
 class Utils {
 
+  def getCalculator(lat: Double, long: Double): (Double, Double) => Double = (latTo: Double, longTo: Double) => calculateDistance(lat,long,latTo,longTo)
+
+
   def calculateDistance(latFrom: Double, longFrom: Double, latTo: Double, longTo: Double): Double = {
     def toRadians(value : Double) : Double = value*math.Pi/180
 
