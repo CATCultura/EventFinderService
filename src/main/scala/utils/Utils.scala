@@ -1,8 +1,6 @@
 package cat.cultura.eventfinder
 package utils
 
-import org.springframework.stereotype.Service
-
 class Utils {
 
   def calculateDistance(latFrom: Double, longFrom: Double, latTo: Double, longTo: Double): Double = {

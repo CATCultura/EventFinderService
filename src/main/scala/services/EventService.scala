@@ -6,14 +6,11 @@ import repository.EventRepository
 import repository.request.EventRepositoryRequestImpl
 import utils.Utils
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
-
 import java.time.ZoneId
 import java.util
 import java.util.Date
 
-@Service
+
 class EventService () {
 
   private val eventJpaRepository: EventRepositoryRequestImpl = EventRepositoryRequestImpl()
