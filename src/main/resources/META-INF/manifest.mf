@@ -1,0 +1,1 @@
+Main-Class: cat.cultura.eventfinder.AkkaController

@@ -2,18 +2,18 @@ package cat.cultura.eventfinder
 package services
 
 import entity.Event
-import repository.EventJpaRepository
+import repository.EventRepository
+import repository.request.EventRepositoryRequestImpl
 import utils.Utils
-
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 
 import java.time.ZoneId
 import java.util
 import java.util.Date
 
-@Service
-class EventService @Autowired()(eventJpaRepository: EventJpaRepository) {
+
+class EventService () {
+
+  private val eventJpaRepository: EventRepositoryRequestImpl = EventRepositoryRequestImpl()
 
   private val distanceCalculator = Utils().calculateDistance
 
@@ -33,23 +33,23 @@ class EventService @Autowired()(eventJpaRepository: EventJpaRepository) {
     result
   }
 
-  def getByDistance(lat: Double, long: Double, radius: Double): java.util.List[Event] = {
-    val events: Set[Event] = eventJpaRepository.getAll
-    val result: java.util.List[Event] = util.ArrayList[Event]
+  def getByDistance(lat: Double, long: Double, radius: Double): Set[Event] = {
 
-    val today = java.time.LocalDate.now.atStartOfDay(ZoneId.systemDefault()).toLocalDate
+    val calculator = Utils().getCalculator(lat,long)
 
-    for (i <- events) {
-      val start : java.time.chrono.ChronoLocalDate = extractDate(i.dataInici)
-      val end : java.time.chrono.ChronoLocalDate = extractDate(i.dataFi)
-
-      if (today.isAfter(start) && today.isBefore(end)) {
-        if (distanceCalculator(i.latitud, i.longitud, lat, long) < radius) {
-          result.add(i)
-        }
-      }
+    def isActiveToday(event: Event) : Boolean = {
+      val today = java.time.LocalDate.now.atStartOfDay(ZoneId.systemDefault()).toLocalDate
+      val start: java.time.chrono.ChronoLocalDate = extractDate(event.dataInici)
+      val end: java.time.chrono.ChronoLocalDate = extractDate(event.dataFi)
+      today.isAfter(start) && today.isBefore(end)
     }
-    result
+
+    def isWithinDistance(event: Event) : Boolean = {
+      calculator(event.latitud,event.longitud) < radius
+    }
+
+    val events: Set[Event] = eventJpaRepository.getAll
+    events.filter(isActiveToday).filter(isWithinDistance)
   }
 
 }

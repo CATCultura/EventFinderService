@@ -1,0 +1,33 @@
+swagger: "2.0"
+info:
+  title: CATCultura NES (Nearby Events Service)
+  description: Alles gut
+  version: 1.0.0
+host: 10.4.41.41:8081
+basePath: /
+schemes:
+  - http
+paths:
+  /events:
+    get:
+      summary: Returns a list of events within the provided distance.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: lat
+          type: number
+          description: Latitude of the center of the circle.
+        - in: query
+          name: long
+          type: number
+          description: Longitude of the center of the circle.
+        - in: query
+          name: radius
+          type: number
+          description: Radius of the circle.
+      responses:
+        200:
+          description: OK
+        400:
+          description: Error in the parameters
