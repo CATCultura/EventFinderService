@@ -8,28 +8,19 @@ lazy val root = (project in file("."))
     idePackagePrefix := Some("cat.cultura.eventfinder"),
     assembly / mainClass := Some("cat.cultura.eventfinder.EventFinderApplication"),
     assembly / assemblyJarName := "eventfinder.jar",
-    ThisBuild / assemblyMergeStrategy := {
-      case PathList(ps @ _*) if ps.last endsWith ".MF" => MergeStrategy.first
-      case PathList("javax", "persistence", xs @ _*) => MergeStrategy.last
-      case PathList("javax", "transaction", xs @ _*) => MergeStrategy.first
-      case _ => MergeStrategy.first
-    }
+//    ThisBuild / assemblyMergeStrategy := {
+//      case _ => MergeStrategy.deduplicate
+//    }
   )
-libraryDependencies += "org.springframework.boot" % "spring-boot-starter-web" % "2.7.5"
-//libraryDependencies += "org.springframework.boot" % "spring-boot-starter-data-jdbc" % "2.7.5"
-libraryDependencies += "org.springframework.boot" % "spring-boot-starter-data-jpa" % "2.7.5"
-libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.30"
-libraryDependencies += "org.hibernate" % "hibernate-core" % "5.5.6"
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.14"
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14" % "test"
-//libraryDependencies += "com.google.code.gson" % "gson" % "2.10"
-// https://mvnrepository.com/artifact/org.slf4j/jul-to-slf4j
-libraryDependencies += "org.slf4j" % "jul-to-slf4j" % "2.0.4"
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-libraryDependencies += "org.slf4j" % "slf4j-simple" % "2.0.4"
+libraryDependencies += "org.springframework.boot" % "spring-boot-starter-web" % "2.7.6"
 
-libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.4"
-// https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14"
+
+//libraryDependencies += "org.springframework" % "spring-webmvc" % "6.0.0"
+
+libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.5.13"
+
+libraryDependencies += "org.json4s" %% "json4s-native" % "4.0.6"
 
 
 enablePlugins(JavaAppPackaging)
