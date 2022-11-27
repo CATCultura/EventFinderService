@@ -42,12 +42,6 @@ object AkkaController {
 
       } //get
 
-    val bindingFuture = Http().newServerAt("10.4.41.41", 8082).bind(route)
-
-    println(s"Server now online. Please navigate to http://localhost:8080/hello\nPress RETURN to stop...")
-    StdIn.readLine() // let it run until user presses return
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
+    val bindingFuture = Http().newServerAt("0.0.0.0", 8082).bind(route)
   }
 }
