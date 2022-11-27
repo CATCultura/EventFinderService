@@ -35,22 +35,21 @@ class EventService () {
 
   def getByDistance(lat: Double, long: Double, radius: Double): Set[Event] = {
 
-    def meetsRequirements(event : Event) : Boolean = {
+    val calculator = Utils().getCalculator(lat,long)
+
+    def isActiveToday(event: Event) : Boolean = {
       val today = java.time.LocalDate.now.atStartOfDay(ZoneId.systemDefault()).toLocalDate
       val start: java.time.chrono.ChronoLocalDate = extractDate(event.dataInici)
       val end: java.time.chrono.ChronoLocalDate = extractDate(event.dataFi)
+      today.isAfter(start) && today.isBefore(end)
+    }
 
-      if (today.isAfter(start) && today.isBefore(end)) {
-        if (distanceCalculator(event.latitud, event.longitud, lat, long) < radius) {
-          return true
-        }
-      }
-      false
+    def isWithinDistance(event: Event) : Boolean = {
+      calculator(event.latitud,event.longitud) < radius
     }
 
     val events: Set[Event] = eventJpaRepository.getAll
-    val r : Set[Event] = events.filter(meetsRequirements)
-    r
+    events.filter(isActiveToday).filter(isWithinDistance)
   }
 
 }
