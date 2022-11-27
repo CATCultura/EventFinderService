@@ -37,12 +37,10 @@ object AkkaController {
               val r = write(a)
               complete(r)
             }
-
           }
+        } //path
 
-        }
-
-      }
+      } //get
 
     val bindingFuture = Http().newServerAt("10.4.41.41", 8082).bind(route)
 
