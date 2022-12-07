@@ -12,7 +12,6 @@ pipeline {
         
         
         stage('Deploy') {
-            when { branch 'master' }
             steps {
                 sh 'sudo docker kill $(sudo docker ps -q -f ancestor=eventfinder)'
                 sh 'sudo docker rmi eventfinder -f'
