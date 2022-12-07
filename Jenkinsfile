@@ -2,6 +2,15 @@ pipeline {
     agent any
 
     stages {
+        
+        stage('Analysis') {
+            steps {
+                sh '/home/alumne/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.projectKey=EventFinderService -Dsonar.sources=. -Dsonar.host.url=http://10.4.41.41:9000 -Dsonar.login=sqp_19a4c0786f6352089c0cd6693ffaa5be6bc9f7b2'
+            }
+
+        }
+        
+        
         stage('Deploy') {
             when { branch 'master' }
             steps {
