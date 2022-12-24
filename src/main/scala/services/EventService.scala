@@ -47,7 +47,7 @@ class EventService () {
     def isWithinDistance(event: Event) : Boolean = {
       calculator(event.latitud,event.longitud) < radius
     }
-
+    
     val events: Set[Event] = eventJpaRepository.getAll
     events.filter(isActiveToday).filter(isWithinDistance)
   }

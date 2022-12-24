@@ -19,10 +19,18 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14"
-
-libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.5.13"
+libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.5.14"
 
 libraryDependencies += "org.json4s" %% "json4s-native" % "4.0.6"
+
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.5"
+
+ThisBuild / assemblyMergeStrategy :={
+  case "module-info.class"                                => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+    oldStrategy(x)
+}
 
 
 enablePlugins(JavaAppPackaging)
