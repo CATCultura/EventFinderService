@@ -8,13 +8,16 @@ import akka.event.slf4j.Logger
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.*
 import akka.http.scaladsl.server.Directives.*
+import akka.stream.IOResult
+import akka.stream.scaladsl.{FileIO, Sink}
 import cat.cultura.eventfinder.entity.Event
 import org.json4s.*
 import org.json4s.native.JsonMethods.*
 import org.json4s.native.Serialization
 import org.json4s.native.Serialization.{read, write, writePretty}
 
-import scala.concurrent.ExecutionContextExecutor
+import java.nio.file.Paths
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.io.StdIn
 
 object AkkaController {
@@ -33,23 +36,35 @@ object AkkaController {
 
 
     val route =
-      get {
-        path("events") {
-          parameters("lat".as[Double], "long".as[Double], "radius".as[Double]) {
-            (lat, long, radius) => {
-              logger.info("Received request with params: " + lat + " " + long + " " + radius)
-              val ini = System.currentTimeMillis()
-              val a = eventService.getByDistance(lat, long, radius)
-              logger.info("A total of " + a.size + " events meet the requirements")
-              val r = writePretty[Set[Event]](a)
-              val end = System.currentTimeMillis()
-              logger.info("Total service time: " + (end-ini)/1000 + " seconds")
-              complete(r)
+      concat (
+        get {
+          path("events") {
+            parameters("lat".as[Double], "long".as[Double], "radius".as[Double]) {
+              (lat, long, radius) => {
+                logger.info("Received request with params: " + lat + " " + long + " " + radius)
+                val ini = System.currentTimeMillis()
+                val a = eventService.getByDistance(lat, long, radius)
+                logger.info("A total of " + a.size + " events meet the requirements")
+                val r = writePretty[Set[Event]](a)
+                val end = System.currentTimeMillis()
+                logger.info("Total service time: " + (end - ini) / 1000 + " seconds")
+                val entity = HttpEntity(r)
+                complete(entity)
+              }
             }
-          }
-        } //path
+          } //path
+        },
+        get {
+          path("docs" ) {
+            logger.info("Received a petition for documentation")
+            val file = scala.io.Source.fromFile("src/main/resources/openAPIspec.yml", "UTF8")
+            val str = file.mkString
+            file.close()
+            complete(str)
 
-      } //get
+          }
+        }
+      )
 
     val bindingFuture = Http().newServerAt("0.0.0.0", 8082).bind(route)
   }

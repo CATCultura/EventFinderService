@@ -1,33 +1,125 @@
-swagger: "2.0"
+openapi: 3.0.1
 info:
-  title: CATCultura NES (Nearby Events Service)
-  description: Alles gut
   version: 1.0.0
-host: 10.4.41.41:8081
-basePath: /
-schemes:
-  - http
+  title: CATCultura NES (Nearby Events Service)
+  description: "Open API spec for Nearby Events Service. From CatCultura to the world."
+servers:
+  - url: 'http://localhost:3000/'
+
 paths:
   /events:
     get:
       summary: Returns a list of events within the provided distance.
-      produces:
-        - application/json
       parameters:
         - in: query
           name: lat
-          type: number
-          description: Latitude of the center of the circle.
+          schema:
+            type: number
+            example: 45
+          description: 'Latitude of the center of the circle.'
         - in: query
           name: long
-          type: number
-          description: Longitude of the center of the circle.
+          schema:
+            type: number
+            example: 2
+          description: 'Longitude of the center of the circle.'
         - in: query
           name: radius
-          type: number
-          description: Radius of the circle.
+          schema:
+            type: number
+            example: 45
+          description: 'Radius of the circle.'
       responses:
-        200:
+        '200':
           description: OK
-        400:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        '400':
           description: Error in the parameters
+
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1324
+        denominacio:
+          type: string
+          example: "An interesting event title"
+        dataInici:
+          type: string
+          example: "2022-12-25"
+        dataFi:
+          type: string
+          example: "2022-12-26"
+        dataFiAprox:
+          type: string
+          example: "True"
+        descripcio:
+          type: string
+          example: "A somewhat lengthy description"
+        entrades:
+          type: string
+          example: "You can buy your tickets in your local tavern."
+        horari:
+          type: string
+          example: "From 12 to 16 every day except Mondays, because fuck Mondays"
+        subtitol:
+          type: string
+          example: "An interesting event subtitle"
+        tagsAmbits:
+          type: array
+          items:
+            type: string
+        tagsCateg:
+          type: array
+          items:
+            type: string
+        tagsAltresCateg:
+          type: array
+          items:
+            type: string
+        links:
+          type: string
+        documents:
+          type: string
+        imatges:
+          type: array
+          items:
+            type: string
+            example: 'an url to an image'
+        videos:
+          type: string
+        adreca:
+          type: string
+          example: "Interesting St, 25"
+        codiPostal:
+          type: integer
+          example: "08221"
+        ubicacio:
+          type: string
+          example: "the most interesting location"
+        email:
+          type: string
+        espai:
+          type: string
+          example: 'Casal popular'
+        latitud:
+          type: number
+          example: 45.6
+        longitud:
+          type: number
+          example: 1.8
+        telf:
+          type: string
+        url:
+          type: string
+        imgApp:
+          type: string
+          example: 'an url'
