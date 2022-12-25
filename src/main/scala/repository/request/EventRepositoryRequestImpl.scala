@@ -4,6 +4,8 @@ package repository.request
 import entity.Event
 import repository.EventRepository
 
+import akka.event.slf4j.Logger
+import cat.cultura.eventfinder.AkkaController.getClass
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.{HttpGet, HttpUriRequest}
 import org.apache.http.impl.client.HttpClientBuilder
@@ -15,12 +17,17 @@ import org.json4s.native.Serialization.{read, write}
 import java.io.{BufferedReader, InputStreamReader}
 import java.net.http.HttpClient
 import java.net.{HttpURLConnection, URL}
+import java.util.Base64
+
 
 class EventRepositoryRequestImpl extends EventRepository {
 
   private val requestUrl : String = "http://10.4.41.41:8081/allevents"
 
-  private val hash : String = "eventservice"
+  val logger = Logger(getClass.getName)
+  private def base64Encode(user: String, password: String): String = {
+    "Basic " + Base64.getEncoder.encodeToString((user + ":" + password).getBytes())
+  }
 
   override def getAll: Set[Event] = {
 
@@ -30,12 +37,16 @@ class EventRepositoryRequestImpl extends EventRepository {
     a
   }
 
-  def getRestContent(url: String): String = {
+  private def getRestContent(url: String): String = {
 
     val httpClient = HttpClientBuilder.create.build
-    var a = new HttpGet(requestUrl)
-    val b = a.addHeader("Authorization",hash)
+    var a = new HttpGet(url)
+    val b = a.addHeader("Authorization",base64Encode("admin","admin"))
+    logger.info("Executing the remote request.")
+    val ini : Long = System.currentTimeMillis()
     val httpResponse = httpClient.execute(a)
+    val end : Long = System.currentTimeMillis()
+    logger.info("Response received. Latency of " + (end-ini)/1000  + " seconds")
     val entity = httpResponse.getEntity
     var content = ""
     if (entity != null) {
