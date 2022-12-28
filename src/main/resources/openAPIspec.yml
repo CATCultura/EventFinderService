@@ -4,7 +4,7 @@ info:
   title: CATCultura NES (Nearby Events Service)
   description: "Open API spec for Nearby Events Service. From CatCultura to the world."
 servers:
-  - url: 'http://localhost:3000/'
+  - url: 'http://4.231.36.42:8080/'
 
 paths:
   /events:
@@ -46,9 +46,6 @@ components:
     Event:
       type: object
       properties:
-        id:
-          type: integer
-          example: 1324
         denominacio:
           type: string
           example: "An interesting event title"

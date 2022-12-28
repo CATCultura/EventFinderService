@@ -22,7 +22,7 @@ import java.util.Base64
 
 class EventRepositoryRequestImpl extends EventRepository {
 
-  private val requestUrl : String = "http://10.4.41.41:8081/allevents"
+  private val requestUrl : String = "http://10.0.0.4:8081/allevents"
 
   val logger = Logger(getClass.getName)
   private def base64Encode(user: String, password: String): String = {

@@ -2,7 +2,6 @@ package cat.cultura.eventfinder
 package entity
 
 case class Event(
-    id: Long,
     dataInici: Option[String],
     dataFi: Option[String],
     dataFiAprox: String,

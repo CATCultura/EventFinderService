@@ -7,16 +7,12 @@ pipeline {
             steps {
                 sh '/home/alumne/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.projectKey=EventFinderService -Dsonar.sources=. -Dsonar.host.url=http://10.4.41.41:9000 -Dsonar.login=sqp_19a4c0786f6352089c0cd6693ffaa5be6bc9f7b2'
             }
-
         }
-        
-        
+
         stage('Deploy') {
             steps {
-                sh 'sudo docker kill $(sudo docker ps -q -f ancestor=eventfinder)'
-                sh 'sudo docker rmi eventfinder -f'
-                sh 'sudo docker build -t eventfinder .'
-                sh 'sudo docker run -d -p 8082:8082 eventfinder'
+                sh 'sudo docker tag eventfinder catculturacontainerhub.azurecr.io/eventfinder'
+                sh 'sudo docker push catculturacontainerhub.azurecr.io/eventfinder'
             }
         }
         stage('Notify') {

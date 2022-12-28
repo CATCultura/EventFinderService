@@ -2,7 +2,7 @@ package cat.cultura.eventfinder
 package services
 
 import entity.Event
-import repository.EventRepository
+import repository.{EventRepository, LocalEventRepository}
 import repository.request.EventRepositoryRequestImpl
 import utils.Utils
 
@@ -14,6 +14,8 @@ import java.util.Date
 class EventService () {
 
   private val eventJpaRepository: EventRepositoryRequestImpl = EventRepositoryRequestImpl()
+
+  private val eventRepo: LocalEventRepository = LocalEventRepository()
 
   private val distanceCalculator = Utils().calculateDistance
 
@@ -29,7 +31,7 @@ class EventService () {
   }
 
   def getAll: Set[Event] = {
-    val result: Set[Event] = eventJpaRepository.getAll
+    val result: Set[Event] = eventRepo.getAll
     result
   }
 
@@ -48,7 +50,7 @@ class EventService () {
       calculator(event.latitud,event.longitud) < radius
     }
     
-    val events: Set[Event] = eventJpaRepository.getAll
+    val events: Set[Event] = eventRepo.getAll
     events.filter(isActiveToday).filter(isWithinDistance)
   }
 
