@@ -11,6 +11,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                sh 'sudo docker build -t eventfinder .'
                 sh 'sudo docker tag eventfinder catculturacontainerhub.azurecr.io/eventfinder'
                 sh 'sudo docker push catculturacontainerhub.azurecr.io/eventfinder'
             }
